@@ -1,5 +1,6 @@
 #pragma once
 
+#include <netinet/in.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -15,6 +16,7 @@ typedef struct harness_state_s {
   bool pt_auto_addr_range_a;
   bool pt_auto_addr_range_b;
   uint16_t nyx_net_port;
+  char nyx_net_ip_addr[INET_ADDRSTRLEN];
 } harness_state_t;
 
 harness_state_t *get_harness_state(void);

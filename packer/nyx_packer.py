@@ -180,6 +180,7 @@ def compile(config):
     LEGACY_MODE = config.argument_values["legacy"]
     NET_FUZZ_MODE = config.argument_values["nyx_net"]
     NET_FUZZ_PORT = config.argument_values["nyx_net_port"]
+    NET_FUZZ_IP = config.argument_values["nyx_net_ip"]
     USE_REAL_NETWORK = config.argument_values["real_network"]
     DISABLE_PT_RANGE_A = config.argument_values["no_pt_auto_conf_a"]
     DISABLE_PT_RANGE_B = config.argument_values["no_pt_auto_conf_b"]
@@ -397,6 +398,8 @@ def compile(config):
         download_script += "NYX_NET_FUZZ_MODE=ON "
     if NET_FUZZ_PORT:
         download_script += "NYX_NET_PORT=%s "%(NET_FUZZ_PORT)
+    if NET_FUZZ_IP:
+        download_script += "NYX_NET_IP_ADDR=%s "%(NET_FUZZ_IP)
     if USE_REAL_NETWORK:
         download_script += "USE_REAL_NETWORK=ON "
     if LEGACY_FILE_MODE:

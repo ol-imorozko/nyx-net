@@ -405,13 +405,16 @@ ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags, struct sockaddr *
 		/* TODO: check if socket type is DGRAM */
 		if(src_addr != NULL){
 			struct sockaddr_in* tmp = (struct sockaddr_in*) src_addr;
+            const char *ip_addr = get_harness_state()->nyx_net_ip_addr;
+            struct in_addr ipv4_binary;
+
 			tmp->sin_family = AF_INET;
 #ifdef CLIENT_UDP_PORT
 			tmp->sin_port = htons(CLIENT_UDP_PORT);
 #else
 			tmp->sin_port = htons(50000);
 #endif
-			tmp->sin_addr.s_addr = htonl(0x7F000001); /* 127.0.0.1 */
+			tmp->sin_addr.s_addr = ipv4_binary.s_addr;
 			*addrlen = sizeof(struct sockaddr_in);
 		}
 
@@ -775,6 +778,7 @@ int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen){
 		if(ret != -1){
 
 			bool exists = connection_exists(ntohs(((struct sockaddr_in*)addr)->sin_port));
+            const char *ip_addr = get_harness_state()->nyx_net_ip_addr;
 
 			if(!exists){
 				if(is_target_port(ntohs(((struct sockaddr_in*)addr)->sin_port))){
@@ -782,7 +786,7 @@ int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen){
 
 					add_connection(ntohs(((struct sockaddr_in*)addr)->sin_port));
 
-					connect_to_server("127.0.0.1", ntohs(((struct sockaddr_in*)addr)->sin_port)); /* fix me */
+					connect_to_server(ip_addr, ntohs(((struct sockaddr_in*)addr)->sin_port));
 					//hprintf("%s %d %d\n", __func__, tmp_addr.sin_port, ret);
 					assert(set_server_socket_to_connection(ntohs(((struct sockaddr_in*)addr)->sin_port), sockfd));
 				}

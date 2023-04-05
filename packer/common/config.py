@@ -304,6 +304,7 @@ class PackerConfiguration:
 
         nyx_net_group.add_argument('--nyx_net', help='enable nyx network fuzzing', action='store_true', default=False)
         nyx_net_group.add_argument('--nyx_net_port', metavar='<nyx_net_port>', help='fuzz specified network port', default=0, type=int)
+        nyx_net_group.add_argument('--nyx_net_ip', metavar='<ip addr>', help='fuzz specified network ip', default="127.0.0.1", type=str)
         nyx_net_group.add_argument('--nyx_net_udp', help='fuzz UDP port instead TCP', action='store_true', default=False)
         nyx_net_group.add_argument('--nyx_net_client_mode', help='fuzz target in client mode', action='store_true', default=False)
         nyx_net_group.add_argument('--nyx_net_stdin', help='use file as stdin input', action=FullPath, type=parse_is_file)
