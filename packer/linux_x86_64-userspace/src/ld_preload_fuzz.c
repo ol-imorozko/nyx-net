@@ -1083,6 +1083,10 @@ int __libc_start_main(int (*main) (int,char **,char **),
     else if (get_harness_state()->net_fuzz_mode){
         capabilites_configuration(false, false, true);
         hprintf("Info: running in net fuzz mode!\n");
+        if (get_harness_state()->real_network_mode)
+            hprintf("Info: Nyx-Net will use real network to pass data!\n");
+        else
+            hprintf("Info: Nyx-Net will use network emulation to pass data!\n");
     }
     else {
         if(!get_harness_state()->delayed_init && !get_harness_state()->net_fuzz_mode){

@@ -313,6 +313,7 @@ class PackerConfiguration:
         nyx_net_group.add_argument('--add_pre_process_args', metavar='<pre_process_ags>', help='args of preprocess', default="", type=str)
         nyx_net_group.add_argument('--ignore_udp_port', metavar='<ignore_udp_port>', help='ignore specific UDP port', default=0, type=int)
         nyx_net_group.add_argument('--set_client_udp_port', metavar='<set_client_udp_port>', help='set UDP client port number', default=0, type=int)
+        nyx_net_group.add_argument('--real_network', help='Use real network to transfer data to target', action='store_true', default=False)
 
         debug_group = parser.add_argument_group("Debug")
 

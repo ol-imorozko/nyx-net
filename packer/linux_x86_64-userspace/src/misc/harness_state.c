@@ -41,6 +41,7 @@ void set_harness_state(void){
     state->asan_executable = check_env("NYX_ASAN_EXECUTABLE");
     state->legacy_file_mode = check_env("NYX_LEGACY_FILE_MODE");
     state->net_fuzz_mode = check_env("NYX_NET_FUZZ_MODE");
+    state->real_network_mode = check_env("USE_REAL_NETWORK");
     state->afl_mode = check_env("NYX_AFL_PLUS_PLUS_MODE");
     state->delayed_init = check_env("DELAYED_NYX_FUZZER_INIT");
     state->pt_auto_addr_range_a = check_env("NYX_PT_RANGE_AUTO_CONF_A");
@@ -58,6 +59,7 @@ void set_harness_state(void){
     hprintf("asan_executable: %d\n", state->asan_executable);
     hprintf("legacy_file_mode: %d\n", state->legacy_file_mode);
     hprintf("net_fuzz_mode: %d\n", state->net_fuzz_mode);
+    hprintf("real_network_mode: %d\n", state->real_network_mode);
     hprintf("afl_mode: %d\n", state->afl_mode);
     hprintf("delayed_init: %d\n", state->delayed_init);
     hprintf("pt_auto_addr_range_a: %d\n", state->pt_auto_addr_range_a);
