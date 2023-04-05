@@ -385,7 +385,7 @@ def compile(config):
     if asan_lib:
         download_script += "LD_BIND_NOW=1 LD_PRELOAD=/tmp/%s:ld_preload_fuzz.so "%(asan_lib)
     else:
-        download_script += "LD_BIND_NOW=1 LD_PRELOAD=/tmp/ld_preload_fuzz.so "
+        download_script += "LD_BIND_NOW=1 LD_PRELOAD=/tmp/ld_preload_fuzz.so:/home/debian/onload/build/gnu_x86_64/lib/transport/unix/libcitransport0.so "
     download_script += "ASAN_OPTIONS=detect_leaks=0:allocator_may_return_null=1:log_path=/tmp/data.log:abort_on_error=true "
 
     if DELAYED_INIT:

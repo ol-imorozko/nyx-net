@@ -344,11 +344,22 @@ ssize_t recv(int sockfd, void *buf, size_t len, int flags){
 	//int client_socket = server_socket_to_client_socket(sockfd);
 	//if(client_socket != -1){
 	DEBUG("%s --> %d\n", __func__, sockfd);
+    char buff_for_send[8200] = {0};
 
 	if(server_socket_exists(sockfd)){
 #ifndef NET_STANDALONE
 		init_nyx();
-		return handle_next_packet(sockfd, buf, len, false);
+        char buff_for_send[8200] = {0};
+		/* return handle_next_packet(sockfd, buf, len, false); */
+        // temporary solution, should create buff before the snapshot taken
+        /* hprintf("snapshot restored\n"); */
+        size_t data_len = handle_next_packet(sockfd, buff_for_send, len, false);
+
+        //notify client thread
+        send_malformed_data(buff_for_send, data_len);
+
+        return real_recv(sockfd, buf, len, flags);
+		/* return handle_next_packet(sockfd, buf, len, false); */
 #endif
 
 		//hprintf("%s: not implemented\n", __func__);
@@ -598,6 +609,7 @@ int close(int fd){
 		/* broken ? */
 		if(get_active_connections() == 0){
 			DEBUG("RELEASE!\n");
+            real_close(fd);
 			//while(1){}
 			//	
 			//}
@@ -844,14 +856,18 @@ int listen(int sockfd, int backlog){
 		}
 
 		ret = real_listen(sockfd, backlog);
-		
-		if(!exists){
-				if(is_target_port(ntohs(addr.sin_port))){ 
-					add_connection(ntohs(addr.sin_port));
-					connect_to_server("127.0.0.1", ntohs(addr.sin_port)); /* fix me */
-					DEBUG("%s: DONE \n", __func__);
 
-				}
+		if(!exists){
+			if(is_target_port(ntohs(addr.sin_port))){
+				add_connection(ntohs(addr.sin_port));
+
+				if(get_harness_state()->real_network_mode)
+					create_client(get_harness_state()->nyx_net_ip_addr, ntohs(addr.sin_port));
+				else
+					connect_to_server(get_harness_state()->nyx_net_ip_addr, ntohs(addr.sin_port));
+
+				printf("%s: DONE \n", __func__);
+			}
 		}
 	}
 
